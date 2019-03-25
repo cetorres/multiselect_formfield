@@ -4,7 +4,7 @@ A multi select form field using alert dialog to select multiple items with check
 
 ## Demo
 
-<img src="screenshot.gif" width="300" />
+<img src="https://github.com/cetorres/multiselect_formfield/raw/master/screenshot.gif" width="300" />
 
 ## Features
 
