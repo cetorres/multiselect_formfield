@@ -19,6 +19,8 @@ class MultiSelectFormField extends FormField<dynamic> {
   final Widget trailing;
   final String okButtonLabel;
   final String cancelButtonLabel;
+  final Color fillColor;
+  final InputBorder border;
 
   MultiSelectFormField(
       {FormFieldSetter<dynamic> onSaved,
@@ -39,6 +41,8 @@ class MultiSelectFormField extends FormField<dynamic> {
       this.close,
       this.okButtonLabel = 'OK',
       this.cancelButtonLabel = 'CANCEL',
+      this.fillColor,
+      this.border,
       this.trailing})
       : super(
           onSaved: onSaved,
@@ -96,6 +100,8 @@ class MultiSelectFormField extends FormField<dynamic> {
                   filled: true,
                   errorText: state.hasError ? state.errorText : null,
                   errorMaxLines: 4,
+                  fillColor: fillColor ?? Theme.of(state.context).canvasColor,
+                  border: border ?? UnderlineInputBorder(),
                 ),
                 isEmpty: state.value == null || state.value == '',
                 child: Column(
@@ -124,7 +130,7 @@ class MultiSelectFormField extends FormField<dynamic> {
                           Icon(
                             Icons.arrow_drop_down,
                             color: Colors.black87,
-                            size: 25.0,                            
+                            size: 25.0,
                           ),
                         ],
                       ),
