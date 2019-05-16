@@ -19,6 +19,8 @@ class MultiSelectFormField extends FormField<dynamic> {
   final Widget trailing;
   final String okButtonLabel;
   final String cancelButtonLabel;
+  final bool addAnyOption;
+  final String anyLabel;
 
   MultiSelectFormField(
       {FormFieldSetter<dynamic> onSaved,
@@ -39,22 +41,39 @@ class MultiSelectFormField extends FormField<dynamic> {
       this.close,
       this.okButtonLabel = 'OK',
       this.cancelButtonLabel = 'CANCEL',
-      this.trailing})
+      this.trailing,
+      this.addAnyOption = false,
+      this.anyLabel = 'Any',
       : super(
           onSaved: onSaved,
           validator: validator,
           initialValue: initialValue,
           autovalidate: autovalidate,
           builder: (FormFieldState<dynamic> state) {
+            List _dataSource = List.from(dataSource ?? []);
+            if (addAnyOption) {
+              _dataSource.insert(0, {
+                valueField: MultiSelectDialogItem.ANY,
+                textField: anyLabel
+              });
+            }
+
             List<Widget> _buildSelectedOptions(dynamic values, state) {
               List<Widget> selectedOptions = [];
 
               if (values != null) {
                 values.forEach((item) {
-                  var existingItem = dataSource.singleWhere((itm) => itm[valueField] == item, orElse: () => null);
-                  selectedOptions.add(Chip(
-                    label: Text(existingItem[textField], overflow: TextOverflow.ellipsis),
-                  ));
+                  if (item != MultiSelectDialogItem.ANY) {
+                    var existingItem = _dataSource.singleWhere((itm) => itm[valueField] == item, orElse: () => null);
+                    selectedOptions.add(Chip(
+                      label: Text(existingItem[textField], overflow: TextOverflow.ellipsis),
+                      onDeleted: () {
+                        final List value = state.value;
+                        value.remove(existingItem[valueField]);
+                        state.didChange(value);
+                      },
+                    ));
+                  }
                 });
               }
 
@@ -67,9 +86,12 @@ class MultiSelectFormField extends FormField<dynamic> {
                 if (initialSelected == null) {
                   initialSelected = List();
                 }
+                if (addAnyOption && initialSelected.isEmpty) {
+                  initialSelected.add(MultiSelectDialogItem.ANY);
+                }
 
-                final items = List<MultiSelectDialogItem<dynamic>>();
-                dataSource.forEach((item) {
+                final items = List<MultiSelectDialogItem>();
+                _dataSource.forEach((item) {
                   items.add(MultiSelectDialogItem(item[valueField], item[textField]));
                 });
 
@@ -124,12 +146,12 @@ class MultiSelectFormField extends FormField<dynamic> {
                           Icon(
                             Icons.arrow_drop_down,
                             color: Colors.black87,
-                            size: 25.0,                            
+                            size: 25.0,
                           ),
                         ],
                       ),
                     ),
-                    value != null && value.length > 0
+                    value != null && value.length > 0 && value.indexOf(MultiSelectDialogItem.ANY) == -1
                         ? Wrap(
                             spacing: 8.0,
                             runSpacing: 0.0,

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-class MultiSelectDialogItem<V> {
+class MultiSelectDialogItem {
+  static const ANY = 'any';
   const MultiSelectDialogItem(this.value, this.label);
 
-  final V value;
+  final dynamic value;
   final String label;
 }
 
@@ -12,8 +13,8 @@ class MultiSelectDialog<V> extends StatefulWidget {
       {Key key, this.items, this.initialSelectedValues, this.title, this.okButtonLabel, this.cancelButtonLabel})
       : super(key: key);
 
-  final List<MultiSelectDialogItem<V>> items;
-  final List<V> initialSelectedValues;
+  final List<MultiSelectDialogItem> items;
+  final List<dynamic> initialSelectedValues;
   final String title;
   final String okButtonLabel;
   final String cancelButtonLabel;
@@ -23,7 +24,7 @@ class MultiSelectDialog<V> extends StatefulWidget {
 }
 
 class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
-  final _selectedValues = List<V>();
+  final _selectedValues = List<dynamic>();
 
   void initState() {
     super.initState();
@@ -32,13 +33,32 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
     }
   }
 
-  void _onItemCheckedChange(V itemValue, bool checked) {
+  void _onItemCheckedChange(dynamic itemValue, bool checked) {
+    if (itemValue == MultiSelectDialogItem.ANY) {
+      this._setAnyOption(selected: true, reset: true);
+    } else {
+      setState(() {
+        if (checked) {
+          _selectedValues.add(itemValue);
+        } else {
+          _selectedValues.remove(itemValue);
+        }
+        // Set any options status
+        if (_selectedValues.length == 0) {
+          this._setAnyOption(selected: true);
+        } else {
+          this._setAnyOption(selected: false);
+        }
+      });
+    }
+  }
+
+  void _setAnyOption({selected = true, reset = false}) {
     setState(() {
-      if (checked) {
-        _selectedValues.add(itemValue);
-      } else {
-        _selectedValues.remove(itemValue);
-      }
+      if (reset) _selectedValues.clear();
+      selected
+        ? _selectedValues.add(MultiSelectDialogItem.ANY)
+        : _selectedValues.remove(MultiSelectDialogItem.ANY);
     });
   }
 
@@ -76,7 +96,7 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
     );
   }
 
-  Widget _buildItem(MultiSelectDialogItem<V> item) {
+  Widget _buildItem(MultiSelectDialogItem item) {
     final checked = _selectedValues.contains(item.value);
     return CheckboxListTile(
       value: checked,
