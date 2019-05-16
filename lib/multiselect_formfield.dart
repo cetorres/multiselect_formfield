@@ -21,6 +21,7 @@ class MultiSelectFormField extends FormField<dynamic> {
   final String cancelButtonLabel;
   final bool addAnyOption;
   final String anyLabel;
+  final InputDecoration decorator;
 
   MultiSelectFormField(
       {FormFieldSetter<dynamic> onSaved,
@@ -44,6 +45,7 @@ class MultiSelectFormField extends FormField<dynamic> {
       this.trailing,
       this.addAnyOption = false,
       this.anyLabel = 'Any',
+      this.decorator = const InputDecoration(filled: true),
       : super(
           onSaved: onSaved,
           validator: validator,
@@ -114,10 +116,9 @@ class MultiSelectFormField extends FormField<dynamic> {
                 }
               },
               child: InputDecorator(
-                decoration: InputDecoration(
-                  filled: true,
+                decoration:  decorator.copyWith(
                   errorText: state.hasError ? state.errorText : null,
-                  errorMaxLines: 4,
+                  errorMaxLines: 4
                 ),
                 isEmpty: state.value == null || state.value == '',
                 child: Column(
