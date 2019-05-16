@@ -22,6 +22,7 @@ class MultiSelectFormField extends FormField<dynamic> {
   final bool addAnyOption;
   final String anyLabel;
   final InputDecoration decorator;
+  final bool optionsDeletable;
 
   MultiSelectFormField(
       {FormFieldSetter<dynamic> onSaved,
@@ -46,6 +47,7 @@ class MultiSelectFormField extends FormField<dynamic> {
       this.addAnyOption = false,
       this.anyLabel = 'Any',
       this.decorator = const InputDecoration(filled: true),
+      this.optionsDeletable = false})
       : super(
           onSaved: onSaved,
           validator: validator,
@@ -69,11 +71,12 @@ class MultiSelectFormField extends FormField<dynamic> {
                     var existingItem = _dataSource.singleWhere((itm) => itm[valueField] == item, orElse: () => null);
                     selectedOptions.add(Chip(
                       label: Text(existingItem[textField], overflow: TextOverflow.ellipsis),
-                      onDeleted: () {
-                        final List value = state.value;
-                        value.remove(existingItem[valueField]);
-                        state.didChange(value);
-                      },
+                      onDeleted: optionsDeletable
+                        ? () {
+                            state.value.remove(existingItem[valueField]);
+                            state.didChange(value);
+                          }
+                        : null,
                     ));
                   }
                 });
