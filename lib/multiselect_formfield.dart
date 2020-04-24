@@ -21,6 +21,7 @@ class MultiSelectFormField extends FormField<dynamic> {
   final String cancelButtonLabel;
   final Color fillColor;
   final InputBorder border;
+  final bool enabled;
 
   MultiSelectFormField(
       {FormFieldSetter<dynamic> onSaved,
@@ -43,6 +44,7 @@ class MultiSelectFormField extends FormField<dynamic> {
       this.cancelButtonLabel = 'CANCEL',
       this.fillColor,
       this.border,
+      this.enabled = true,
       this.trailing})
       : super(
           onSaved: onSaved,
@@ -66,7 +68,7 @@ class MultiSelectFormField extends FormField<dynamic> {
             }
 
             return InkWell(
-              onTap: () async {
+              onTap: !enabled ? null : () async {
                 List initialSelected = value;
                 if (initialSelected == null) {
                   initialSelected = List();
