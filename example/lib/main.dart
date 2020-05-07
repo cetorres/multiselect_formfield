@@ -60,6 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     if (value == null || value.length == 0) {
                       return 'Please select one or more options';
                     }
+                    return null;
                   },
                   dataSource: [
                     {
@@ -97,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   cancelButtonLabel: 'CANCEL',
                   // required: true,
                   hintText: 'Please choose one or more',
-                  value: _myActivities,
+                  initialValue: _myActivities,
                   onSaved: (value) {
                     if (value == null) return;
                     setState(() {
