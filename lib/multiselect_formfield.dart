@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:multiselect_formfield/multiselect_dialog.dart';
 
 class MultiSelectFormField extends FormField<dynamic> {
-  final String titleText;
+  final Text title;
   final String hintText;
-  final bool required;
+  final bool isRequired;
   final String errorText;
   final List dataSource;
   final String textField;
@@ -26,9 +26,9 @@ class MultiSelectFormField extends FormField<dynamic> {
       FormFieldValidator<dynamic> validator,
       dynamic initialValue,
       bool autovalidate = false,
-      this.titleText = 'Title',
+      @required this.title,
       this.hintText = 'Tap to select one or more',
-      this.required = false,
+      this.isRequired = false,
       this.errorText = 'Please select one or more options',
       this.leading,
       this.dataSource,
@@ -42,7 +42,8 @@ class MultiSelectFormField extends FormField<dynamic> {
       this.fillColor,
       this.border,
       this.trailing})
-      : super(
+      : assert(title != null),
+        super(
           onSaved: onSaved,
           validator: validator,
           initialValue: initialValue,
@@ -53,9 +54,12 @@ class MultiSelectFormField extends FormField<dynamic> {
 
               if (state.value != null) {
                 state.value.forEach((item) {
-                  var existingItem = dataSource.singleWhere((itm) => itm[valueField] == item, orElse: () => null);
+                  var existingItem = dataSource.singleWhere(
+                      (itm) => itm[valueField] == item,
+                      orElse: () => null);
                   selectedOptions.add(Chip(
-                    label: Text(existingItem[textField], overflow: TextOverflow.ellipsis),
+                    label: Text(existingItem[textField],
+                        overflow: TextOverflow.ellipsis),
                   ));
                 });
               }
@@ -72,14 +76,15 @@ class MultiSelectFormField extends FormField<dynamic> {
 
                 final items = List<MultiSelectDialogItem<dynamic>>();
                 dataSource.forEach((item) {
-                  items.add(MultiSelectDialogItem(item[valueField], item[textField]));
+                  items.add(
+                      MultiSelectDialogItem(item[valueField], item[textField]));
                 });
 
                 List selectedValues = await showDialog<List>(
                   context: state.context,
                   builder: (BuildContext context) {
                     return MultiSelectDialog(
-                      title: titleText,
+                      title: title.data,
                       okButtonLabel: okButtonLabel,
                       cancelButtonLabel: cancelButtonLabel,
                       items: items,
@@ -110,20 +115,18 @@ class MultiSelectFormField extends FormField<dynamic> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Expanded(
-                              child: Text(
-                            titleText,
-                            style: TextStyle(fontSize: 13.0, color: Colors.black54),
-                          )),
-                          required
-                              ? Padding(padding:EdgeInsets.only(top:5, right: 5), child: Text(
-                                  ' *',
-                                  style: TextStyle(
-                                    color: Colors.red.shade700,
-                                    fontSize: 17.0,
+                          Expanded(child: title),
+                          isRequired
+                              ? Padding(
+                                  padding: EdgeInsets.only(top: 5, right: 5),
+                                  child: Text(
+                                    ' *',
+                                    style: TextStyle(
+                                      color: Colors.red.shade700,
+                                      fontSize: 17.0,
+                                    ),
                                   ),
-                                ),
-                              )
+                                )
                               : Container(),
                           Icon(
                             Icons.arrow_drop_down,
