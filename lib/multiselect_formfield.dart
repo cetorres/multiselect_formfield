@@ -1,7 +1,7 @@
 library multiselect_formfield;
 
 import 'package:flutter/material.dart';
-import 'package:site_yonetimi/widgets/multi_select/multiselect_dialog.dart';
+import 'package:multiselect_formfield/multiselect_dialog.dart';
 
 class MultiSelectFormField extends FormField<dynamic> {
   final String titleText;
