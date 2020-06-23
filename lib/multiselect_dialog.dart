@@ -46,6 +46,7 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
     setState(() {
       widget.selectAllState = checked;
       if (checked) {
+        _selectedValues.removeRange(0, _selectedValues.length);
         _selectedValues.addAll(widget.items.map((e) => e.value));
       } else {
         _selectedValues.removeRange(0, _selectedValues.length);
