@@ -45,6 +45,7 @@ class MultiSelectFormField extends FormField<dynamic> {
       this.trailing,
       this.maxSelections})
       : super(
+          key: Key(initialValue.join()),
           onSaved: onSaved,
           validator: validator,
           initialValue: initialValue,
