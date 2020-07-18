@@ -52,8 +52,7 @@ class MultiSelectFormField extends FormField<dynamic> {
           builder: (FormFieldState<dynamic> state) {
             List<Widget> _buildSelectedOptions(state) {
               List<Widget> selectedOptions = [];
-
-              if (state.value != null) {
+              if (state.value != null && dataSource.isNotEmpty) {
                 state.value.forEach((item) {
                   var existingItem = dataSource.singleWhere(
                       (itm) => itm[valueField] == item,
@@ -64,7 +63,6 @@ class MultiSelectFormField extends FormField<dynamic> {
                   ));
                 });
               }
-
               return selectedOptions;
             }
 
