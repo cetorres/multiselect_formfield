@@ -9,7 +9,13 @@ class MultiSelectDialogItem<V> {
 
 class MultiSelectDialog<V> extends StatefulWidget {
   MultiSelectDialog(
-      {Key key, this.items, this.initialSelectedValues, this.title, this.okButtonLabel, this.cancelButtonLabel})
+      {Key key,
+      this.items,
+      this.initialSelectedValues,
+      this.title,
+      this.okButtonLabel,
+      this.cancelButtonLabel,
+      this.maxSelections})
       : super(key: key);
 
   final List<MultiSelectDialogItem<V>> items;
@@ -17,6 +23,7 @@ class MultiSelectDialog<V> extends StatefulWidget {
   final String title;
   final String okButtonLabel;
   final String cancelButtonLabel;
+  final int maxSelections;
 
   @override
   State<StatefulWidget> createState() => _MultiSelectDialogState<V>();
@@ -24,11 +31,14 @@ class MultiSelectDialog<V> extends StatefulWidget {
 
 class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
   final _selectedValues = List<V>();
+  bool _disableOptions = false;
 
   void initState() {
     super.initState();
     if (widget.initialSelectedValues != null) {
       _selectedValues.addAll(widget.initialSelectedValues);
+      setState(() =>
+          _disableOptions = _selectedValues.length == widget.maxSelections);
     }
   }
 
@@ -39,6 +49,7 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
       } else {
         _selectedValues.remove(itemValue);
       }
+      _disableOptions = _selectedValues.length == widget.maxSelections;
     });
   }
 
@@ -48,6 +59,10 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
 
   void _onSubmitTap() {
     Navigator.pop(context, _selectedValues);
+  }
+
+  bool _isItemDisabled(bool isChecked) {
+    return !isChecked && _disableOptions;
   }
 
   @override
@@ -82,7 +97,9 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
       value: checked,
       title: Text(item.label),
       controlAffinity: ListTileControlAffinity.leading,
-      onChanged: (checked) => _onItemCheckedChange(item.value, checked),
+      onChanged: _isItemDisabled(checked)
+          ? null
+          : (bool checked) => _onItemCheckedChange(item.value, checked),
     );
   }
 }
