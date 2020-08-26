@@ -51,7 +51,7 @@ class MultiSelectFormField extends FormField<dynamic> {
             List<Widget> _buildSelectedOptions(state) {
               List<Widget> selectedOptions = [];
 
-              if (state.value != null) {
+              if (state.value != null && state.value.length > 0) {
                 state.value.forEach((item) {
                   var existingItem = dataSource.singleWhere((itm) => itm[valueField] == item, orElse: () => null);
                   selectedOptions.add(Chip(
@@ -113,7 +113,7 @@ class MultiSelectFormField extends FormField<dynamic> {
                           Expanded(
                               child: Text(
                             titleText,
-                            style: TextStyle(fontSize: 13.0, color: Colors.black54),
+                            style: TextStyle(fontSize: 13.0),
                           )),
                           required
                               ? Padding(padding:EdgeInsets.only(top:5, right: 5), child: Text(
@@ -127,7 +127,6 @@ class MultiSelectFormField extends FormField<dynamic> {
                               : Container(),
                           Icon(
                             Icons.arrow_drop_down,
-                            color: Colors.black87,
                             size: 25.0,
                           ),
                         ],
