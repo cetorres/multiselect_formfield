@@ -18,7 +18,90 @@ A multi select form field using alert dialog to select multiple items with check
 - Customizable texts.
 - Follows the app theme and colors.
 
+
+### Customization Parameters [MultiFormField]
+
+
+| Parameter                 |                       Description                                                                                                             |
+| :------------------------ | :---------------------------------------------------------------------------------------------------------------------- |
+| **title** *Widget*    |                Set Title of MultiSelectTextFormField.                                                             |
+| **hintWidget** *Widget*                     |                  Set Hint Text of MultiSelectTextFormField.  |
+| **required** *bool*                     |                Add Selection is Compulsary or not.  |
+| **errorText** *String*            |                Error String to be Displayed                     |
+| **dataSource** *List<dynamic>*|                 List of Data as DataSource To Select. |
+| **textField** *String* |            Key Param from List (DataSource). |
+| **valueField**  *String*  |            Value Param From List (DataSource). |
+| **okButtonLabel** String* |    POsitive  Button Label String. |
+| **cancelButtonLabel** String* |    Negative Button Label String. |
+| **fillColor** *Color Widget*            |                Changes background color of FormField                     |
+ 
+ 
+  ### Customization [Selection Dialog] 
+
+| Parameter                 |                       Description                                                                                                             |
+| :------------------------ | :---------------------------------------------------------------------------------------------------------------------- |
+| **Shape** *ShapeBorder*            |              Customizes the Shape Of AlertDialog                  |
+| **dialogTextStyle** *TextStyle*            |         Customizes the TextStyle Of AlertDialog                   |
+| **checkBoxCheckColor** *Color*            |         Customizes the CheckColor                |
+| **checkBoxActiveColor** *Color*            |         Customizes the CheckBoxActiveColor                 |
+
+
+  
+  ### Customization [Selection Chip] 
+| Parameter                 |                       Description                                                                                                             |
+| :------------------------ | :---------------------------------------------------------------------------------------------------------------------- |
+| **chipLabelStyle** *TextStyle*          |             Customizes the TextStyle Of Selected Chip                |
+|**chipBackGroundColor** *Color*            |             Customizes the Color Of Selected Chip               |
+
+ ## Minimal Example
+
+```dart
+MultiSelectFormField(
+                  autovalidate: false,
+                  chipBackGroundColor: Colors.red,
+                  chipLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+                  dialogTextStyle: TextStyle(fontWeight: FontWeight.bold),
+                  checkBoxActiveColor: Colors.red,
+                  checkBoxCheckColor: Colors.green,
+                  dialogShapeBorder: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                  title: Text(
+                    "Title Of Form",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  dataSource: [
+                    {
+                      "display": "Running",
+                      "value": "Running",
+                    },
+                    {
+                      "display": "Climbing",
+                      "value": "Climbing",
+                    },
+                    {
+                      "display": "Walking",
+                      "value": "Walking",
+                    },
+                  ],
+                  textField: 'display',
+                  valueField: 'value',
+                  okButtonLabel: 'OK',
+                  cancelButtonLabel: 'CANCEL',
+                  hintWidget: Text('Please choose one or more'),
+                  initialValue: _myActivities,
+                  onSaved: (value) {
+                    if (value == null) return;
+                    setState(() {
+                      _myActivities = value;
+                    });
+                  },
+                ),
+```
+
+
 ## Example
+```
+
 
 ```dart
 import 'package:multiselect_formfield/multiselect_formfield.dart';
