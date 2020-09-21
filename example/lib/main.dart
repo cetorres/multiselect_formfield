@@ -63,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   dialogShapeBorder: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(12.0))),
                   title: Text(
-                    "Title Of Form",
+                    "My workouts",
                     style: TextStyle(fontSize: 16),
                   ),
                   validator: (value) {

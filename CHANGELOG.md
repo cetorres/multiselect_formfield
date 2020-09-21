@@ -1,4 +1,14 @@
 
+## [0.1.4] - 09/21/2020
+
+* Added more UI features:
+  * Title/Hint as Widget.
+  * Chip customizations(color/label).
+  * Dialog customizations - Dialog textStyle.
+  * View updated README for more details.
+
+Thanks to [Suraj Lad](https://github.com/SurajLad). Merged pull request [#25](https://github.com/cetorres/multiselect_formfield/pull/25).
+  
 ## [0.1.3] - 05/07/2020
 
 * Bugfix: When providing default value on load the validator is always null
