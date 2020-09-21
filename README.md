@@ -98,10 +98,7 @@ MultiSelectFormField(
                 ),
 ```
 
-
 ## Example
-```
-
 
 ```dart
 import 'package:multiselect_formfield/multiselect_formfield.dart';
