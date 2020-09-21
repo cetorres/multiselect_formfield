@@ -8,6 +8,17 @@ class MultiSelectDialogItem<V> {
 }
 
 class MultiSelectDialog<V> extends StatefulWidget {
+  final List<MultiSelectDialogItem<V>> items;
+  final List<V> initialSelectedValues;
+  final Widget title;
+  final String okButtonLabel;
+  final String cancelButtonLabel;
+  final int maxSelections;
+  final TextStyle labelStyle;
+  final ShapeBorder dialogShapeBorder;
+  final Color checkBoxCheckColor;
+  final Color checkBoxActiveColor;
+
   MultiSelectDialog(
       {Key key,
       this.items,
@@ -15,15 +26,12 @@ class MultiSelectDialog<V> extends StatefulWidget {
       this.title,
       this.okButtonLabel,
       this.cancelButtonLabel,
-      this.maxSelections})
+      this.maxSelections,
+      this.labelStyle = const TextStyle(),
+      this.dialogShapeBorder,
+      this.checkBoxActiveColor,
+      this.checkBoxCheckColor})
       : super(key: key);
-
-  final List<MultiSelectDialogItem<V>> items;
-  final List<V> initialSelectedValues;
-  final String title;
-  final String okButtonLabel;
-  final String cancelButtonLabel;
-  final int maxSelections;
 
   @override
   State<StatefulWidget> createState() => _MultiSelectDialogState<V>();
@@ -68,7 +76,8 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.title),
+      title: widget.title,
+      shape: widget.dialogShapeBorder,
       contentPadding: EdgeInsets.only(top: 12.0),
       content: SingleChildScrollView(
         child: ListTileTheme(
@@ -95,7 +104,12 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
     final checked = _selectedValues.contains(item.value);
     return CheckboxListTile(
       value: checked,
-      title: Text(item.label),
+      checkColor: widget.checkBoxCheckColor,
+      activeColor: widget.checkBoxActiveColor,
+      title: Text(
+        item.label,
+        style: widget.labelStyle,
+      ),
       controlAffinity: ListTileControlAffinity.leading,
       onChanged: _isItemDisabled(checked)
           ? null

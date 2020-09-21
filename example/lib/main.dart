@@ -55,7 +55,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: EdgeInsets.all(16),
                 child: MultiSelectFormField(
                   autovalidate: false,
-                  titleText: 'My workouts',
+                  chipBackGroundColor: Colors.red,
+                  chipLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+                  dialogTextStyle: TextStyle(fontWeight: FontWeight.bold),
+                  checkBoxActiveColor: Colors.red,
+                  checkBoxCheckColor: Colors.green,
+                  dialogShapeBorder: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                  title: Text(
+                    "My workouts",
+                    style: TextStyle(fontSize: 16),
+                  ),
                   validator: (value) {
                     if (value == null || value.length == 0) {
                       return 'Please select one or more options';
@@ -96,8 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   valueField: 'value',
                   okButtonLabel: 'OK',
                   cancelButtonLabel: 'CANCEL',
-                  // required: true,
-                  hintText: 'Please choose one or more',
+                  hintWidget: Text('Please choose one or more'),
                   initialValue: _myActivities,
                   onSaved: (value) {
                     if (value == null) return;
@@ -108,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.all(8),                
+                padding: EdgeInsets.all(8),
                 child: RaisedButton(
                   child: Text('Save'),
                   onPressed: _saveForm,
