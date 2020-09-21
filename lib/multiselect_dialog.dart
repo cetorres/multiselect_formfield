@@ -13,6 +13,7 @@ class MultiSelectDialog<V> extends StatefulWidget {
   final Widget title;
   final String okButtonLabel;
   final String cancelButtonLabel;
+  final int maxSelections;
   final TextStyle labelStyle;
   final ShapeBorder dialogShapeBorder;
   final Color checkBoxCheckColor;
@@ -25,6 +26,7 @@ class MultiSelectDialog<V> extends StatefulWidget {
       this.title,
       this.okButtonLabel,
       this.cancelButtonLabel,
+      this.maxSelections,
       this.labelStyle = const TextStyle(),
       this.dialogShapeBorder,
       this.checkBoxActiveColor,
@@ -37,11 +39,14 @@ class MultiSelectDialog<V> extends StatefulWidget {
 
 class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
   final _selectedValues = List<V>();
+  bool _disableOptions = false;
 
   void initState() {
     super.initState();
     if (widget.initialSelectedValues != null) {
       _selectedValues.addAll(widget.initialSelectedValues);
+      setState(() =>
+          _disableOptions = _selectedValues.length == widget.maxSelections);
     }
   }
 
@@ -52,6 +57,7 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
       } else {
         _selectedValues.remove(itemValue);
       }
+      _disableOptions = _selectedValues.length == widget.maxSelections;
     });
   }
 
@@ -61,6 +67,10 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
 
   void _onSubmitTap() {
     Navigator.pop(context, _selectedValues);
+  }
+
+  bool _isItemDisabled(bool isChecked) {
+    return !isChecked && _disableOptions;
   }
 
   @override
@@ -101,7 +111,9 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
         style: widget.labelStyle,
       ),
       controlAffinity: ListTileControlAffinity.leading,
-      onChanged: (checked) => _onItemCheckedChange(item.value, checked),
+      onChanged: _isItemDisabled(checked)
+          ? null
+          : (bool checked) => _onItemCheckedChange(item.value, checked),
     );
   }
 }

@@ -26,6 +26,7 @@ class MultiSelectFormField extends FormField<dynamic> {
   final ShapeBorder dialogShapeBorder;
   final Color checkBoxCheckColor;
   final Color checkBoxActiveColor;
+  final int maxSelections;
 
   MultiSelectFormField({
     FormFieldSetter<dynamic> onSaved,
@@ -48,6 +49,7 @@ class MultiSelectFormField extends FormField<dynamic> {
     this.fillColor,
     this.border,
     this.trailing,
+    this.maxSelections,
     this.chipLabelStyle,
     this.chipBackGroundColor,
     this.dialogTextStyle = const TextStyle(),
@@ -57,6 +59,7 @@ class MultiSelectFormField extends FormField<dynamic> {
     this.checkBoxActiveColor,
     this.checkBoxCheckColor,
   }) : super(
+          key: Key(initialValue.join()),
           onSaved: onSaved,
           validator: validator,
           initialValue: initialValue,
@@ -64,24 +67,21 @@ class MultiSelectFormField extends FormField<dynamic> {
           builder: (FormFieldState<dynamic> state) {
             List<Widget> _buildSelectedOptions(state) {
               List<Widget> selectedOptions = [];
-
-              if (state.value != null) {
+              if (state.value != null && dataSource.isNotEmpty) {
                 state.value.forEach((item) {
                   var existingItem = dataSource.singleWhere(
                       (itm) => itm[valueField] == item,
                       orElse: () => null);
-                  selectedOptions.add(Chip(
-                    labelStyle: chipLabelStyle,
-                    backgroundColor: chipBackGroundColor,
-                    label: Text(
-                      existingItem[textField],
-                      overflow: TextOverflow.ellipsis,
-                      // style: TextStyle(color: Colors.red),
-                    ),
-                  ));
+                  if (existingItem != null) {
+                    selectedOptions.add(Chip(
+                      labelStyle: chipLabelStyle,
+                      backgroundColor: chipBackGroundColor,
+                      label: Text(existingItem[textField],
+                          overflow: TextOverflow.ellipsis),
+                    ));
+                  }
                 });
               }
-
               return selectedOptions;
             }
 
@@ -102,6 +102,7 @@ class MultiSelectFormField extends FormField<dynamic> {
                   context: state.context,
                   builder: (BuildContext context) {
                     return MultiSelectDialog(
+                      maxSelections: maxSelections ?? items.length,
                       title: title,
                       okButtonLabel: okButtonLabel,
                       cancelButtonLabel: cancelButtonLabel,
