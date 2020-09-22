@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:multiselect_formfield/multiselect_dialog.dart';
 
 class MultiSelectFormField extends FormField<dynamic> {
-  final String titleText;
-  final String hintText;
+  final Widget title;
+  final Widget hintWidget;
   final bool required;
   final String errorText;
   final dynamic value;
@@ -23,38 +23,58 @@ class MultiSelectFormField extends FormField<dynamic> {
   final String anyLabel;
   final InputDecoration decorator;
   final bool optionsDeletable;
+  final Color fillColor;
+  final InputBorder border;
+  final TextStyle chipLabelStyle;
+  final Color chipBackGroundColor;
+  final TextStyle dialogTextStyle;
+  final ShapeBorder dialogShapeBorder;
+  final Color checkBoxCheckColor;
+  final Color checkBoxActiveColor;
 
   MultiSelectFormField(
-      {FormFieldSetter<dynamic> onSaved,
-      FormFieldValidator<dynamic> validator,
-      int initialValue,
-      bool autovalidate = false,
-      this.titleText = 'Title',
-      this.hintText = 'Tap to select one or more',
-      this.required = false,
-      this.errorText = 'Please select one or more options',
-      this.value,
-      this.leading,
-      this.dataSource,
-      this.textField,
-      this.valueField,
-      this.change,
-      this.open,
-      this.close,
-      this.okButtonLabel = 'OK',
-      this.cancelButtonLabel = 'CANCEL',
-      this.trailing,
-      this.addAnyOption = false,
-      this.anyLabel = 'Any',
-      this.decorator = const InputDecoration(filled: true),
-      this.optionsDeletable = false})
-      : super(
+    {FormFieldSetter<dynamic> onSaved,
+    FormFieldValidator<dynamic> validator,
+    dynamic initialValue,
+    bool autovalidate = false,
+    this.value,
+    this.title = const Text('Title'),
+    this.hintWidget = const Text('Tap to select one or more'),
+    this.required = false,
+    this.errorText = 'Please select one or more options',
+    this.leading,
+    this.dataSource,
+    this.textField,
+    this.valueField,
+    this.change,
+    this.open,
+    this.close,
+    this.okButtonLabel = 'OK',
+    this.cancelButtonLabel = 'CANCEL',
+    this.fillColor,
+    this.border,
+    this.trailing,
+    this.addAnyOption = false,
+    this.anyLabel = 'Any',
+    this.decorator = const InputDecoration(filled: true),
+    this.optionsDeletable = false,
+    this.chipLabelStyle,
+    this.chipBackGroundColor,
+    this.dialogTextStyle = const TextStyle(),
+    this.dialogShapeBorder = const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(0.0)),
+    ),
+    this.checkBoxActiveColor,
+    this.checkBoxCheckColor,
+  }) : super(
           onSaved: onSaved,
           validator: validator,
           initialValue: initialValue,
           autovalidate: autovalidate,
           builder: (FormFieldState<dynamic> state) {
             List _dataSource = List.from(dataSource ?? []);
+            dynamic _value = state.value ?? initialValue;
+
             if (addAnyOption) {
               _dataSource.insert(0, {
                 valueField: MultiSelectDialogItem.ANY,
@@ -87,7 +107,7 @@ class MultiSelectFormField extends FormField<dynamic> {
 
             return InkWell(
               onTap: () async {
-                List initialSelected = value;
+                List initialSelected = state.value;
                 if (initialSelected == null) {
                   initialSelected = List();
                 }
@@ -104,11 +124,15 @@ class MultiSelectFormField extends FormField<dynamic> {
                   context: state.context,
                   builder: (BuildContext context) {
                     return MultiSelectDialog(
-                      title: titleText,
+                      title: title,
                       okButtonLabel: okButtonLabel,
                       cancelButtonLabel: cancelButtonLabel,
                       items: items,
                       initialSelectedValues: initialSelected,
+                      labelStyle: dialogTextStyle,
+                      dialogShapeBorder: dialogShapeBorder,
+                      checkBoxActiveColor: checkBoxActiveColor,
+                      checkBoxCheckColor: checkBoxCheckColor,
                     );
                   },
                 );
@@ -121,9 +145,11 @@ class MultiSelectFormField extends FormField<dynamic> {
               child: InputDecorator(
                 decoration:  decorator.copyWith(
                   errorText: state.hasError ? state.errorText : null,
-                  errorMaxLines: 4
+                  errorMaxLines: 4,
+                  fillColor: fillColor ?? Theme.of(state.context).canvasColor,
+                  border: border ?? UnderlineInputBorder(),
                 ),
-                isEmpty: state.value == null || state.value == '',
+                isEmpty: _value == null || _value == '',
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -133,19 +159,19 @@ class MultiSelectFormField extends FormField<dynamic> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Expanded(
-                              child: Text(
-                            titleText,
-                            style: TextStyle(fontSize: 13.0, color: Colors.black54),
-                          )),
+                            child: title,
+                          ),
                           required
-                              ? Padding(padding:EdgeInsets.only(top:5, right: 5), child: Text(
-                                  ' *',
-                                  style: TextStyle(
-                                    color: Colors.red.shade700,
-                                    fontSize: 17.0,
+                              ? Padding(
+                                  padding: EdgeInsets.only(top: 5, right: 5),
+                                  child: Text(
+                                    ' *',
+                                    style: TextStyle(
+                                      color: Colors.red.shade700,
+                                      fontSize: 17.0,
+                                    ),
                                   ),
-                                ),
-                              )
+                                )
                               : Container(),
                           Icon(
                             Icons.arrow_drop_down,
@@ -155,21 +181,15 @@ class MultiSelectFormField extends FormField<dynamic> {
                         ],
                       ),
                     ),
-                    value != null && value.length > 0 && value.indexOf(MultiSelectDialogItem.ANY) == -1
+                    _value != null && _value.length > 0 && _value.indexOf(MultiSelectDialogItem.ANY) == -1
                         ? Wrap(
                             spacing: 8.0,
                             runSpacing: 0.0,
-                            children: _buildSelectedOptions(value, state),
+                            children: _buildSelectedOptions(_value, state),
                           )
                         : new Container(
                             padding: EdgeInsets.only(top: 4),
-                            child: Text(
-                              hintText,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey.shade500,
-                              ),
-                            ),
+                            child: hintWidget,
                           )
                   ],
                 ),

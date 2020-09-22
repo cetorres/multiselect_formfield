@@ -9,15 +9,28 @@ class MultiSelectDialogItem {
 }
 
 class MultiSelectDialog<V> extends StatefulWidget {
-  MultiSelectDialog(
-      {Key key, this.items, this.initialSelectedValues, this.title, this.okButtonLabel, this.cancelButtonLabel})
-      : super(key: key);
-
   final List<MultiSelectDialogItem> items;
   final List<dynamic> initialSelectedValues;
-  final String title;
+  final Widget title;
   final String okButtonLabel;
   final String cancelButtonLabel;
+  final TextStyle labelStyle;
+  final ShapeBorder dialogShapeBorder;
+  final Color checkBoxCheckColor;
+  final Color checkBoxActiveColor;
+
+  MultiSelectDialog(
+      {Key key,
+      this.items,
+      this.initialSelectedValues,
+      this.title,
+      this.okButtonLabel,
+      this.cancelButtonLabel,
+      this.labelStyle = const TextStyle(),
+      this.dialogShapeBorder,
+      this.checkBoxActiveColor,
+      this.checkBoxCheckColor})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _MultiSelectDialogState<V>();
@@ -73,7 +86,8 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.title),
+      title: widget.title,
+      shape: widget.dialogShapeBorder,
       contentPadding: EdgeInsets.only(top: 12.0),
       content: SingleChildScrollView(
         child: ListTileTheme(
@@ -100,7 +114,12 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
     final checked = _selectedValues.contains(item.value);
     return CheckboxListTile(
       value: checked,
-      title: Text(item.label),
+      checkColor: widget.checkBoxCheckColor,
+      activeColor: widget.checkBoxActiveColor,
+      title: Text(
+        item.label,
+        style: widget.labelStyle,
+      ),
       controlAffinity: ListTileControlAffinity.leading,
       onChanged: (checked) => _onItemCheckedChange(item.value, checked),
     );
