@@ -3,12 +3,12 @@ library multiselect_formfield;
 import 'package:flutter/material.dart';
 import 'package:multiselect_formfield/multiselect_dialog.dart';
 
-class MultiSelectFormField extends FormField<dynamic> {
+class MultiSelectFormField<T extends Object> extends FormField<List<T>> {
   final Widget title;
   final Widget hintWidget;
   final bool required;
   final String errorText;
-  final dynamic value;
+  final List<T> value;
   final List dataSource;
   final String textField;
   final String valueField;
@@ -33,9 +33,9 @@ class MultiSelectFormField extends FormField<dynamic> {
   final Color checkBoxActiveColor;
 
   MultiSelectFormField(
-    {FormFieldSetter<dynamic> onSaved,
-    FormFieldValidator<dynamic> validator,
-    dynamic initialValue,
+    {FormFieldSetter<List<T>> onSaved,
+    FormFieldValidator<List<T>> validator,
+    List<T> initialValue,
     bool autovalidate = false,
     this.value,
     this.title = const Text('Title'),
@@ -71,9 +71,9 @@ class MultiSelectFormField extends FormField<dynamic> {
           validator: validator,
           initialValue: initialValue,
           autovalidate: autovalidate,
-          builder: (FormFieldState<dynamic> state) {
+          builder: (FormFieldState<List<T>> state) {
             List _dataSource = List.from(dataSource ?? []);
-            dynamic _value = state.value ?? initialValue;
+            List<T> _value = state.value ?? initialValue;
 
             if (addAnyOption) {
               _dataSource.insert(0, {
@@ -82,7 +82,7 @@ class MultiSelectFormField extends FormField<dynamic> {
               });
             }
 
-            List<Widget> _buildSelectedOptions(dynamic values, state) {
+            List<Widget> _buildSelectedOptions(List<T> values, state) {
               List<Widget> selectedOptions = [];
 
               if (values != null) {
@@ -107,12 +107,9 @@ class MultiSelectFormField extends FormField<dynamic> {
 
             return InkWell(
               onTap: () async {
-                List initialSelected = state.value;
+                List<Object> initialSelected = state.value;
                 if (initialSelected == null) {
-                  initialSelected = List();
-                }
-                if (addAnyOption && initialSelected.isEmpty) {
-                  initialSelected.add(MultiSelectDialogItem.ANY);
+                  initialSelected = List<T>();
                 }
 
                 final items = List<MultiSelectDialogItem>();
@@ -123,7 +120,7 @@ class MultiSelectFormField extends FormField<dynamic> {
                 List selectedValues = await showDialog<List>(
                   context: state.context,
                   builder: (BuildContext context) {
-                    return MultiSelectDialog(
+                    return MultiSelectDialog<T>(
                       title: title,
                       okButtonLabel: okButtonLabel,
                       cancelButtonLabel: cancelButtonLabel,
@@ -133,10 +130,10 @@ class MultiSelectFormField extends FormField<dynamic> {
                       dialogShapeBorder: dialogShapeBorder,
                       checkBoxActiveColor: checkBoxActiveColor,
                       checkBoxCheckColor: checkBoxCheckColor,
+                      addAnyOption: addAnyOption
                     );
                   },
                 );
-
                 if (selectedValues != null) {
                   state.didChange(selectedValues);
                   state.save();
@@ -149,7 +146,7 @@ class MultiSelectFormField extends FormField<dynamic> {
                   fillColor: fillColor ?? Theme.of(state.context).canvasColor,
                   border: border ?? UnderlineInputBorder(),
                 ),
-                isEmpty: _value == null || _value == '',
+                isEmpty: _value == null,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -181,7 +178,7 @@ class MultiSelectFormField extends FormField<dynamic> {
                         ],
                       ),
                     ),
-                    _value != null && _value.length > 0 && _value.indexOf(MultiSelectDialogItem.ANY) == -1
+                    _value != null && _value.length > 0
                         ? Wrap(
                             spacing: 8.0,
                             runSpacing: 0.0,
