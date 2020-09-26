@@ -19,14 +19,48 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List _myActivities;
+  List _myActivitiesWithAny;
   String _myActivitiesResult;
+  String _myActivitiesWithAnyResult;
+  List dataSource = [
+    {
+      "display": "Running",
+      "value": "Running",
+    },
+    {
+      "display": "Climbing",
+      "value": "Climbing",
+    },
+    {
+      "display": "Walking",
+      "value": "Walking",
+    },
+    {
+      "display": "Swimming",
+      "value": "Swimming",
+    },
+    {
+      "display": "Soccer Practice",
+      "value": "Soccer Practice",
+    },
+    {
+      "display": "Baseball Practice",
+      "value": "Baseball Practice",
+    },
+    {
+      "display": "Football Practice",
+      "value": "Football Practice",
+    },
+  ];
   final formKey = new GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
     _myActivities = [];
+    _myActivitiesWithAny = ["Running", "Swimming"];
     _myActivitiesResult = '';
+    _myActivitiesWithAnyResult = '';
   }
 
   _saveForm() {
@@ -35,6 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
       form.save();
       setState(() {
         _myActivitiesResult = _myActivities.toString();
+        _myActivitiesWithAnyResult = _myActivitiesWithAny.toString();
       });
     }
   }
@@ -72,46 +107,57 @@ class _MyHomePageState extends State<MyHomePage> {
                     }
                     return null;
                   },
-                  dataSource: [
-                    {
-                      "display": "Running",
-                      "value": "Running",
-                    },
-                    {
-                      "display": "Climbing",
-                      "value": "Climbing",
-                    },
-                    {
-                      "display": "Walking",
-                      "value": "Walking",
-                    },
-                    {
-                      "display": "Swimming",
-                      "value": "Swimming",
-                    },
-                    {
-                      "display": "Soccer Practice",
-                      "value": "Soccer Practice",
-                    },
-                    {
-                      "display": "Baseball Practice",
-                      "value": "Baseball Practice",
-                    },
-                    {
-                      "display": "Football Practice",
-                      "value": "Football Practice",
-                    },
-                  ],
+                  dataSource: dataSource,
                   textField: 'display',
                   valueField: 'value',
                   okButtonLabel: 'OK',
                   cancelButtonLabel: 'CANCEL',
                   hintWidget: Text('Please choose one or more'),
                   initialValue: _myActivities,
+                  value: _myActivities,
                   onSaved: (value) {
                     if (value == null) return;
                     setState(() {
                       _myActivities = value;
+                    });
+                  },
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(16),
+                child: MultiSelectFormField(
+                  autovalidate: false,
+                  chipBackGroundColor: Colors.red,
+                  chipLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+                  dialogTextStyle: TextStyle(fontWeight: FontWeight.bold),
+                  checkBoxActiveColor: Colors.red,
+                  checkBoxCheckColor: Colors.green,
+                  dialogShapeBorder: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                  title: Text(
+                    "My workouts with Any",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.length == 0) {
+                      return 'Please select one or more options';
+                    }
+                    return null;
+                  },
+                  dataSource: dataSource,
+                  textField: 'display',
+                  valueField: 'value',
+                  okButtonLabel: 'OK',
+                  cancelButtonLabel: 'CANCEL',
+                  hintWidget: Text('Please choose one or more'),
+                  initialValue: _myActivitiesWithAny,
+                  value: _myActivitiesWithAny,
+                  addAnyOption: true,
+                  optionsDeletable: true,
+                  onSaved: (value) {
+                    if (value == null) return;
+                    setState(() {
+                      _myActivitiesWithAny = value;
                     });
                   },
                 ),
@@ -125,7 +171,12 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Container(
                 padding: EdgeInsets.all(16),
-                child: Text(_myActivitiesResult),
+                child: Column(
+                  children: [
+                    Text(_myActivitiesResult),
+                    Text(_myActivitiesWithAnyResult),
+                  ],
+                ),
               )
             ],
           ),
