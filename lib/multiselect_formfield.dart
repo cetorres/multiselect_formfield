@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:multiselect_formfield/multiselect_dialog.dart';
 
 class MultiSelectFormField extends FormField<dynamic> {
-  final String titleText;
-  final String hintText;
+  final Widget title;
+  final Widget hintWidget;
   final bool required;
   final String errorText;
   final List dataSource;
@@ -20,33 +20,47 @@ class MultiSelectFormField extends FormField<dynamic> {
   final String cancelButtonLabel;
   final Color fillColor;
   final InputBorder border;
+  final TextStyle chipLabelStyle;
+  final Color chipBackGroundColor;
+  final TextStyle dialogTextStyle;
+  final ShapeBorder dialogShapeBorder;
+  final Color checkBoxCheckColor;
+  final Color checkBoxActiveColor;
   final bool showSelectAll;
   final String selectAllText;
 
-  MultiSelectFormField(
-      {FormFieldSetter<dynamic> onSaved,
-      FormFieldValidator<dynamic> validator,
-      dynamic initialValue,
-      bool autovalidate = false,
-      this.titleText = 'Title',
-      this.hintText = 'Tap to select one or more',
-      this.required = false,
-      this.errorText = 'Please select one or more options',
-      this.leading,
-      this.dataSource,
-      this.textField,
-      this.valueField,
-      this.change,
-      this.open,
-      this.close,
-      this.okButtonLabel = 'OK',
-      this.cancelButtonLabel = 'CANCEL',
-      this.fillColor,
-      this.border,
-      this.showSelectAll = true,
-      this.selectAllText = "Select All",
-      this.trailing})
-      : super(
+  MultiSelectFormField({
+    FormFieldSetter<dynamic> onSaved,
+    FormFieldValidator<dynamic> validator,
+    dynamic initialValue,
+    bool autovalidate = false,
+    this.title = const Text('Title'),
+    this.hintWidget = const Text('Tap to select one or more'),
+    this.required = false,
+    this.errorText = 'Please select one or more options',
+    this.leading,
+    this.dataSource,
+    this.textField,
+    this.valueField,
+    this.change,
+    this.open,
+    this.close,
+    this.okButtonLabel = 'OK',
+    this.cancelButtonLabel = 'CANCEL',
+    this.fillColor,
+    this.border,
+    this.showSelectAll = true,
+    this.selectAllText = "Select All",
+    this.trailing,
+    this.chipLabelStyle,
+    this.chipBackGroundColor,
+    this.dialogTextStyle = const TextStyle(),
+    this.dialogShapeBorder = const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(0.0)),
+    ),
+    this.checkBoxActiveColor,
+    this.checkBoxCheckColor,
+  }) : super(
           onSaved: onSaved,
           validator: validator,
           initialValue: initialValue,
@@ -61,8 +75,14 @@ class MultiSelectFormField extends FormField<dynamic> {
                       (itm) => itm[valueField] == item,
                       orElse: () => null);
                   selectedOptions.add(Chip(
-                    label: Text(existingItem[textField],
-                        overflow: TextOverflow.ellipsis),
+
+                    labelStyle: chipLabelStyle,
+                    backgroundColor: chipBackGroundColor,
+                    label: Text(
+                      existingItem[textField],
+                      overflow: TextOverflow.ellipsis,
+                      // style: TextStyle(color: Colors.red),
+                    ),
                   ));
                 });
               }
@@ -87,13 +107,17 @@ class MultiSelectFormField extends FormField<dynamic> {
                   context: state.context,
                   builder: (BuildContext context) {
                     return MultiSelectDialog(
-                      title: titleText,
+                      title: title,
                       okButtonLabel: okButtonLabel,
                       cancelButtonLabel: cancelButtonLabel,
                       items: items,
                       initialSelectedValues: initialSelected,
                       showSelectAll: showSelectAll,
                       selectAllText: selectAllText,
+                      labelStyle: dialogTextStyle,
+                      dialogShapeBorder: dialogShapeBorder,
+                      checkBoxActiveColor: checkBoxActiveColor,
+                      checkBoxCheckColor: checkBoxCheckColor,
                     );
                   },
                 );
@@ -121,11 +145,9 @@ class MultiSelectFormField extends FormField<dynamic> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Expanded(
-                              child: Text(
-                            titleText,
-                            style: TextStyle(
-                                fontSize: 13.0, color: Colors.black54),
-                          )),
+                            child: title,
+                          ),
+
                           required
                               ? Padding(
                                   padding: EdgeInsets.only(top: 5, right: 5),
@@ -154,13 +176,7 @@ class MultiSelectFormField extends FormField<dynamic> {
                           )
                         : new Container(
                             padding: EdgeInsets.only(top: 4),
-                            child: Text(
-                              hintText,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey.shade500,
-                              ),
-                            ),
+                            child: hintWidget,
                           )
                   ],
                 ),
