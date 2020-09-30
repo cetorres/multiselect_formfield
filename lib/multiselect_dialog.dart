@@ -13,6 +13,9 @@ class MultiSelectDialog<V> extends StatefulWidget {
   final Widget title;
   final String okButtonLabel;
   final String cancelButtonLabel;
+  final bool showSelectAll;
+  final String selectAllText;
+  bool selectAllState = false;
   final TextStyle labelStyle;
   final ShapeBorder dialogShapeBorder;
   final Color checkBoxCheckColor;
@@ -28,8 +31,11 @@ class MultiSelectDialog<V> extends StatefulWidget {
       this.labelStyle = const TextStyle(),
       this.dialogShapeBorder,
       this.checkBoxActiveColor,
-      this.checkBoxCheckColor})
+      this.checkBoxCheckColor,
+      this.showSelectAll,
+      this.selectAllText})
       : super(key: key);
+
 
   @override
   State<StatefulWidget> createState() => _MultiSelectDialogState<V>();
@@ -43,6 +49,18 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
     if (widget.initialSelectedValues != null) {
       _selectedValues.addAll(widget.initialSelectedValues);
     }
+  }
+
+  void _onSelectAllCheckedChange(bool checked) {
+    setState(() {
+      widget.selectAllState = checked;
+      if (checked) {
+        _selectedValues.removeRange(0, _selectedValues.length);
+        _selectedValues.addAll(widget.items.map((e) => e.value));
+      } else {
+        _selectedValues.removeRange(0, _selectedValues.length);
+      }
+    });
   }
 
   void _onItemCheckedChange(V itemValue, bool checked) {
@@ -73,7 +91,7 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
         child: ListTileTheme(
           contentPadding: EdgeInsets.fromLTRB(14.0, 0.0, 24.0, 0.0),
           child: ListBody(
-            children: widget.items.map(_buildItem).toList(),
+            children: _buildList(),
           ),
         ),
       ),
@@ -90,6 +108,16 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
     );
   }
 
+  List<Widget> _buildList() {
+    List<Widget> listBody = [];
+    if (widget.showSelectAll) {
+      listBody.add(
+          _buildSelectAllItem(widget.selectAllState, widget.selectAllText));
+    }
+    listBody.addAll(widget.items.map(_buildItem));
+    return listBody;
+  }
+
   Widget _buildItem(MultiSelectDialogItem<V> item) {
     final checked = _selectedValues.contains(item.value);
     return CheckboxListTile(
@@ -102,6 +130,15 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
       ),
       controlAffinity: ListTileControlAffinity.leading,
       onChanged: (checked) => _onItemCheckedChange(item.value, checked),
+    );
+  }
+
+  Widget _buildSelectAllItem(checked, title) {
+    return CheckboxListTile(
+      value: checked,
+      title: Text(title),
+      controlAffinity: ListTileControlAffinity.leading,
+      onChanged: (checked) => _onSelectAllCheckedChange(checked),
     );
   }
 }
