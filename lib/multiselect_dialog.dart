@@ -14,6 +14,7 @@ class MultiSelectDialog<V> extends StatefulWidget {
   final String okButtonLabel;
   final String cancelButtonLabel;
   final TextStyle labelStyle;
+  final TextStyle dialogHeadderStyle
   final ShapeBorder dialogShapeBorder;
   final Color checkBoxCheckColor;
   final Color checkBoxActiveColor;
@@ -26,6 +27,7 @@ class MultiSelectDialog<V> extends StatefulWidget {
       this.okButtonLabel,
       this.cancelButtonLabel,
       this.labelStyle = const TextStyle(),
+      this.dialogHeadderStyle = const TextStyle(),
       this.dialogShapeBorder,
       this.checkBoxActiveColor,
       this.checkBoxCheckColor})
@@ -66,7 +68,10 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: widget.title,
+      title: Text(
+            widget.title.label,
+          style: widget.dialogHeadderStyle  
+      ),
       shape: widget.dialogShapeBorder,
       contentPadding: EdgeInsets.only(top: 12.0),
       content: SingleChildScrollView(
