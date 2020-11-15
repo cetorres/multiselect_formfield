@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:multiselect_formfield/multiselect_dialog.dart';
 
 class MultiSelectFormField extends FormField<dynamic> {
-  final Widget title;
+  final Text title;
   final Widget hintWidget;
   final bool required;
   final String errorText;
@@ -109,7 +109,7 @@ class MultiSelectFormField extends FormField<dynamic> {
                       cancelButtonLabel: cancelButtonLabel,
                       items: items,
                       initialSelectedValues: initialSelected,
-                      dialogHeadderStyle: dialogHeadderStyle
+                      dialogHeadderStyle: dialogHeadderStyle,
                       labelStyle: dialogTextStyle,
                       dialogShapeBorder: dialogShapeBorder,
                       checkBoxActiveColor: checkBoxActiveColor,
