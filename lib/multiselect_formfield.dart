@@ -22,6 +22,7 @@ class MultiSelectFormField extends FormField<dynamic> {
   final InputBorder border;
   final TextStyle chipLabelStyle;
   final Color chipBackGroundColor;
+  final TextStyle dialogHeadderStyle;
   final TextStyle dialogTextStyle;
   final ShapeBorder dialogShapeBorder;
   final Color checkBoxCheckColor;
@@ -50,6 +51,7 @@ class MultiSelectFormField extends FormField<dynamic> {
     this.trailing,
     this.chipLabelStyle,
     this.chipBackGroundColor,
+    this.dialogHeadderStyle = const TextStyle(),
     this.dialogTextStyle = const TextStyle(),
     this.dialogShapeBorder = const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(0.0)),
@@ -107,6 +109,7 @@ class MultiSelectFormField extends FormField<dynamic> {
                       cancelButtonLabel: cancelButtonLabel,
                       items: items,
                       initialSelectedValues: initialSelected,
+                      dialogHeadderStyle: dialogHeadderStyle
                       labelStyle: dialogTextStyle,
                       dialogShapeBorder: dialogShapeBorder,
                       checkBoxActiveColor: checkBoxActiveColor,
