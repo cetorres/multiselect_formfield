@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:multiselect_formfield/multiselect_dialog.dart';
 
 class MultiSelectFormField extends FormField<dynamic> {
-  final Widget title;
+  final Text title;
   final Widget hintWidget;
   final bool required;
   final String errorText;
@@ -22,6 +22,7 @@ class MultiSelectFormField extends FormField<dynamic> {
   final InputBorder border;
   final TextStyle chipLabelStyle;
   final Color chipBackGroundColor;
+  final TextStyle dialogHeadderStyle;
   final TextStyle dialogTextStyle;
   final ShapeBorder dialogShapeBorder;
   final Color checkBoxCheckColor;
@@ -52,6 +53,7 @@ class MultiSelectFormField extends FormField<dynamic> {
     this.chipLabelStyle,
     this.enabled = true,
     this.chipBackGroundColor,
+    this.dialogHeadderStyle = const TextStyle(),
     this.dialogTextStyle = const TextStyle(),
     this.dialogShapeBorder = const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(0.0)),
@@ -110,6 +112,7 @@ class MultiSelectFormField extends FormField<dynamic> {
                       cancelButtonLabel: cancelButtonLabel,
                       items: items,
                       initialSelectedValues: initialSelected,
+                      dialogHeadderStyle: dialogHeadderStyle,
                       labelStyle: dialogTextStyle,
                       dialogShapeBorder: dialogShapeBorder,
                       checkBoxActiveColor: checkBoxActiveColor,
