@@ -26,6 +26,7 @@ class MultiSelectFormField extends FormField<dynamic> {
   final ShapeBorder dialogShapeBorder;
   final Color checkBoxCheckColor;
   final Color checkBoxActiveColor;
+  final bool enabled;
 
   MultiSelectFormField({
     FormFieldSetter<dynamic> onSaved,
@@ -49,6 +50,7 @@ class MultiSelectFormField extends FormField<dynamic> {
     this.border,
     this.trailing,
     this.chipLabelStyle,
+    this.enabled = true,
     this.chipBackGroundColor,
     this.dialogTextStyle = const TextStyle(),
     this.dialogShapeBorder = const RoundedRectangleBorder(
@@ -86,7 +88,8 @@ class MultiSelectFormField extends FormField<dynamic> {
             }
 
             return InkWell(
-              onTap: () async {
+
+              onTap:  !enabled ? null :() async {
                 List initialSelected = state.value;
                 if (initialSelected == null) {
                   initialSelected = List();
