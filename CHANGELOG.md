@@ -1,4 +1,11 @@
 
+## [0.1.5] - 11/18/2020
+
+* UI improvements:
+  * Add an enabled status to the multiselect.
+
+Thanks to [Ali Briceño](https://github.com/alienriquebm). Merged pull request [#12](https://github.com/cetorres/multiselect_formfield/pull/12).
+
 ## [0.1.4] - 09/21/2020
 
 * Added more UI features:
