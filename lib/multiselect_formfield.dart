@@ -26,6 +26,7 @@ class MultiSelectFormField extends FormField<dynamic> {
   final ShapeBorder dialogShapeBorder;
   final Color checkBoxCheckColor;
   final Color checkBoxActiveColor;
+  final Color dropdownArrowColor;
   final bool enabled;
 
   MultiSelectFormField({
@@ -58,6 +59,7 @@ class MultiSelectFormField extends FormField<dynamic> {
     ),
     this.checkBoxActiveColor,
     this.checkBoxCheckColor,
+    this.dropdownArrowColor = Colors.black87,
   }) : super(
           onSaved: onSaved,
           validator: validator,
@@ -157,7 +159,7 @@ class MultiSelectFormField extends FormField<dynamic> {
                               : Container(),
                           Icon(
                             Icons.arrow_drop_down,
-                            color: Colors.black87,
+                            color: dropdownArrowColor,
                             size: 25.0,
                           ),
                         ],
