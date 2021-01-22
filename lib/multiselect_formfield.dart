@@ -27,6 +27,7 @@ class MultiSelectFormField extends FormField<dynamic> {
   final Color checkBoxCheckColor;
   final Color checkBoxActiveColor;
   final bool enabled;
+  final Icon prefixIcon;
 
   MultiSelectFormField({
     FormFieldSetter<dynamic> onSaved,
@@ -58,6 +59,7 @@ class MultiSelectFormField extends FormField<dynamic> {
     ),
     this.checkBoxActiveColor,
     this.checkBoxCheckColor,
+    this.prefixIcon,
   }) : super(
           onSaved: onSaved,
           validator: validator,
@@ -140,8 +142,13 @@ class MultiSelectFormField extends FormField<dynamic> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
+                          prefixIcon ?? Container(),
                           Expanded(
-                            child: title,
+                            child: Padding(
+                                child: title,
+                                padding: prefixIcon != null
+                                    ? EdgeInsets.only(left: 10, top: 2)
+                                    : EdgeInsets.zero),
                           ),
                           required
                               ? Padding(
