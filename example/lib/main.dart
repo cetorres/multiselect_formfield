@@ -18,8 +18,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List _myActivities;
-  String _myActivitiesResult;
+  List? _myActivities;
+  late String _myActivitiesResult;
   final formKey = new GlobalKey<FormState>();
 
   @override
@@ -30,7 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _saveForm() {
-    var form = formKey.currentState;
+    var form = formKey.currentState!;
     if (form.validate()) {
       form.save();
       setState(() {
@@ -55,11 +55,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: EdgeInsets.all(16),
                 child: MultiSelectFormField(
                   autovalidate: false,
-                  chipBackGroundColor: Colors.red,
-                  chipLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+                  chipBackGroundColor: Colors.blue,
+                  chipLabelStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                   dialogTextStyle: TextStyle(fontWeight: FontWeight.bold),
-                  checkBoxActiveColor: Colors.red,
-                  checkBoxCheckColor: Colors.green,
+                  checkBoxActiveColor: Colors.blue,
+                  checkBoxCheckColor: Colors.white,
                   dialogShapeBorder: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(12.0))),
                   title: Text(
@@ -118,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Container(
                 padding: EdgeInsets.all(8),
-                child: RaisedButton(
+                child: ElevatedButton(
                   child: Text('Save'),
                   onPressed: _saveForm,
                 ),

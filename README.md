@@ -17,6 +17,7 @@ A multi select form field using alert dialog to select multiple items with check
 - Provides requirement of the field.
 - Customizable texts.
 - Follows the app theme and colors.
+- Upgraded to Null Safety.
 
 
 ### Customization Parameters [MultiFormField]

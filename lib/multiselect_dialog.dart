@@ -4,22 +4,22 @@ class MultiSelectDialogItem<V> {
   const MultiSelectDialogItem(this.value, this.label);
 
   final V value;
-  final String label;
+  final String? label;
 }
 
 class MultiSelectDialog<V> extends StatefulWidget {
-  final List<MultiSelectDialogItem<V>> items;
-  final List<V> initialSelectedValues;
-  final Widget title;
-  final String okButtonLabel;
-  final String cancelButtonLabel;
+  final List<MultiSelectDialogItem<V>>? items;
+  final List<V>? initialSelectedValues;
+  final Widget? title;
+  final String? okButtonLabel;
+  final String? cancelButtonLabel;
   final TextStyle labelStyle;
-  final ShapeBorder dialogShapeBorder;
-  final Color checkBoxCheckColor;
-  final Color checkBoxActiveColor;
+  final ShapeBorder? dialogShapeBorder;
+  final Color? checkBoxCheckColor;
+  final Color? checkBoxActiveColor;
 
   MultiSelectDialog(
-      {Key key,
+      {Key? key,
       this.items,
       this.initialSelectedValues,
       this.title,
@@ -36,18 +36,18 @@ class MultiSelectDialog<V> extends StatefulWidget {
 }
 
 class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
-  final _selectedValues = List<V>();
+  final _selectedValues = <V>[];
 
   void initState() {
     super.initState();
     if (widget.initialSelectedValues != null) {
-      _selectedValues.addAll(widget.initialSelectedValues);
+      _selectedValues.addAll(widget.initialSelectedValues!);
     }
   }
 
-  void _onItemCheckedChange(V itemValue, bool checked) {
+  void _onItemCheckedChange(V itemValue, bool? checked) {
     setState(() {
-      if (checked) {
+      if (checked!) {
         _selectedValues.add(itemValue);
       } else {
         _selectedValues.remove(itemValue);
@@ -73,17 +73,17 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
         child: ListTileTheme(
           contentPadding: EdgeInsets.fromLTRB(14.0, 0.0, 24.0, 0.0),
           child: ListBody(
-            children: widget.items.map(_buildItem).toList(),
+            children: widget.items!.map(_buildItem).toList(),
           ),
         ),
       ),
       actions: <Widget>[
-        FlatButton(
-          child: Text(widget.cancelButtonLabel),
+        TextButton(
+          child: Text(widget.cancelButtonLabel!),
           onPressed: _onCancelTap,
         ),
-        FlatButton(
-          child: Text(widget.okButtonLabel),
+        TextButton(
+          child: Text(widget.okButtonLabel!),
           onPressed: _onSubmitTap,
         )
       ],
@@ -97,7 +97,7 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
       checkColor: widget.checkBoxCheckColor,
       activeColor: widget.checkBoxActiveColor,
       title: Text(
-        item.label,
+        item.label!,
         style: widget.labelStyle,
       ),
       controlAffinity: ListTileControlAffinity.leading,

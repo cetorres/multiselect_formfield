@@ -1,4 +1,10 @@
 
+## [0.1.6] - 03/22/2021
+
+* BREAKING CHANGE: Migrated to null safety. 
+
+Thanks to Joel Marks for the donation and encouragement to upgrade to null safety.
+
 ## [0.1.5] - 11/18/2020
 
 * UI improvements:
