@@ -11,6 +11,7 @@ class MultiSelectFormField extends FormField<dynamic> {
   final List? dataSource;
   final String? textField;
   final String? valueField;
+  final Key? key;
   final Function? change;
   final Function? open;
   final Function? close;
@@ -34,6 +35,7 @@ class MultiSelectFormField extends FormField<dynamic> {
     dynamic initialValue,
     bool autovalidate = false,
     this.title = const Text('Title'),
+    this.key,
     this.hintWidget = const Text('Tap to select one or more'),
     this.required = false,
     this.errorText = 'Please select one or more options',
@@ -60,6 +62,7 @@ class MultiSelectFormField extends FormField<dynamic> {
     this.checkBoxCheckColor,
   }) : super(
           onSaved: onSaved,
+          key:key,
           validator: validator,
           initialValue: initialValue,
           autovalidate: autovalidate,
@@ -71,6 +74,7 @@ class MultiSelectFormField extends FormField<dynamic> {
                 state.value.forEach((item) {
                   var existingItem = dataSource!.singleWhere(((itm) => itm[valueField] == item),
                       orElse: () => null);
+                  if (existingItem != null)
                   selectedOptions.add(Chip(
                     labelStyle: chipLabelStyle,
                     backgroundColor: chipBackGroundColor,
