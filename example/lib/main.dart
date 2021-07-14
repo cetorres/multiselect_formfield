@@ -22,7 +22,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<int>? _myInts;
   late String _myActivitiesResult;
   late String _myIntsResult;
-  final formKey = new GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -76,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     style: TextStyle(fontSize: 16),
                   ),
                   validator: (value) {
-                    if (value == null || value.length == 0) {
+                    if (value == null || value.isEmpty) {
                       return 'Please select one or more options';
                     }
                     return null;
@@ -123,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     style: TextStyle(fontSize: 16),
                   ),
                   validator: (value) {
-                    if (value == null || value.length == 0) {
+                    if (value == null || value.isEmpty) {
                       return 'Please select one or more options';
                     }
                     return null;

@@ -38,6 +38,7 @@ class MultiSelectDialog<V> extends StatefulWidget {
 class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
   final _selectedValues = <V>[];
 
+  @override
   void initState() {
     super.initState();
     if (widget.initialSelectedValues != null) {
