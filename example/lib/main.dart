@@ -41,6 +41,9 @@ class _MyHomePageState extends State<MyHomePage> {
         _myActivitiesResult = _myActivities.toString();
         _myIntsResult = _myInts.toString();
       });
+    } else {
+      setState(() =>
+          _myActivitiesResult = _myIntsResult = "Error: Validation failed");
     }
   }
 
