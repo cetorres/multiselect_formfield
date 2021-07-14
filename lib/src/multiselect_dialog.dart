@@ -8,8 +8,8 @@ class MultiSelectDialogItem<V> {
 }
 
 class MultiSelectDialog<V> extends StatefulWidget {
-  final List<MultiSelectDialogItem<V>>? items;
-  final List<V>? initialSelectedValues;
+  final Iterable<MultiSelectDialogItem<V>>? items;
+  final Iterable<V>? initialSelectedValues;
   final Widget? title;
   final String? okButtonLabel;
   final String? cancelButtonLabel;

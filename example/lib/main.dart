@@ -18,7 +18,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List? _myActivities;
+  List<String>? _myActivities;
   late String _myActivitiesResult;
   final formKey = new GlobalKey<FormState>();
 
@@ -53,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               Container(
                 padding: EdgeInsets.all(16),
-                child: MultiSelectFormField(
+                child: MultiSelectFormField<String>(
                   autovalidate: AutovalidateMode.disabled,
                   chipBackGroundColor: Colors.blue,
                   chipLabelStyle: TextStyle(
@@ -74,34 +74,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     return null;
                   },
                   dataSource: [
-                    {
-                      "display": "Running",
-                      "value": "Running",
-                    },
-                    {
-                      "display": "Climbing",
-                      "value": "Climbing",
-                    },
-                    {
-                      "display": "Walking",
-                      "value": "Walking",
-                    },
-                    {
-                      "display": "Swimming",
-                      "value": "Swimming",
-                    },
-                    {
-                      "display": "Soccer Practice",
-                      "value": "Soccer Practice",
-                    },
-                    {
-                      "display": "Baseball Practice",
-                      "value": "Baseball Practice",
-                    },
-                    {
-                      "display": "Football Practice",
-                      "value": "Football Practice",
-                    },
+                    Pair.from("Running"),
+                    Pair.from("Climbing"),
+                    Pair.from("Walking"),
+                    Pair.from("Swimming"),
+                    Pair.from("Soccer Practice"),
+                    Pair.from("Baseball Practice"),
+                    Pair.from("Football Practice"),
                   ],
                   textField: 'display',
                   valueField: 'value',
@@ -112,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onSaved: (value) {
                     if (value == null) return;
                     setState(() {
-                      _myActivities = value;
+                      _myActivities = value.toList();
                     });
                   },
                 ),
