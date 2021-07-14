@@ -19,22 +19,27 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<String>? _myActivities;
+  List<int>? _myInts;
   late String _myActivitiesResult;
+  late String _myIntsResult;
   final formKey = new GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
     _myActivities = [];
+    _myInts = [];
     _myActivitiesResult = '';
+    _myIntsResult = '';
   }
 
   _saveForm() {
-    var form = formKey.currentState!;
+    final form = formKey.currentState!;
     if (form.validate()) {
       form.save();
       setState(() {
         _myActivitiesResult = _myActivities.toString();
+        _myIntsResult = _myInts.toString();
       });
     }
   }
@@ -55,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: EdgeInsets.all(16),
                 child: MultiSelectFormField<String>(
                   autovalidate: AutovalidateMode.disabled,
-                  chipBackGroundColor: Colors.blue,
+                  chipBackgroundColor: Colors.blue,
                   chipLabelStyle: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.white),
                   dialogTextStyle: TextStyle(fontWeight: FontWeight.bold),
@@ -82,8 +87,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     Pair.from("Baseball Practice"),
                     Pair.from("Football Practice"),
                   ],
-                  textField: 'display',
-                  valueField: 'value',
                   okButtonLabel: 'OK',
                   cancelButtonLabel: 'CANCEL',
                   hintWidget: Text('Please choose one or more'),
@@ -97,6 +100,50 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               Container(
+                padding: EdgeInsets.all(16),
+                child: Text(_myActivitiesResult),
+              ),
+              Container(
+                padding: EdgeInsets.all(16),
+                child: MultiSelectFormField<int>(
+                  autovalidate: AutovalidateMode.disabled,
+                  chipBackgroundColor: Colors.blue,
+                  chipLabelStyle: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.white),
+                  dialogTextStyle: TextStyle(fontWeight: FontWeight.bold),
+                  checkBoxActiveColor: Colors.blue,
+                  checkBoxCheckColor: Colors.white,
+                  dialogShapeBorder: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                  title: Text(
+                    "My Numbers",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.length == 0) {
+                      return 'Please select one or more options';
+                    }
+                    return null;
+                  },
+                  dataSource: [
+                    Pair(label: "Zero", value: 0),
+                    Pair(label: "One", value: 1),
+                    Pair(label: "Two", value: 2),
+                    Pair(label: "Three", value: 3),
+                  ],
+                  okButtonLabel: 'OK',
+                  cancelButtonLabel: 'CANCEL',
+                  hintWidget: Text('Please choose one or more'),
+                  initialValue: _myInts,
+                  onSaved: (value) {
+                    if (value == null) return;
+                    setState(() {
+                      _myInts = value.toList();
+                    });
+                  },
+                ),
+              ),
+              Container(
                 padding: EdgeInsets.all(8),
                 child: ElevatedButton(
                   child: Text('Save'),
@@ -105,7 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Container(
                 padding: EdgeInsets.all(16),
-                child: Text(_myActivitiesResult),
+                child: Text(_myIntsResult),
               )
             ],
           ),
