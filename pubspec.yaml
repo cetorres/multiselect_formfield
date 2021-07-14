@@ -1,6 +1,6 @@
 name: multiselect_formfield
 description: A multi select form field using alert dialog to select multiple items with checkboxes and showing as chips.
-version: 0.1.6
+version: 0.1.7
 author: Carlos E. Torres <cetorres@cetorres.com>
 homepage: https://github.com/cetorres/multiselect_formfield
 
@@ -14,5 +14,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  lints: ^1.0.1
 
 flutter:

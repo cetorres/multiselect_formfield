@@ -18,24 +18,32 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List? _myActivities;
+  List<String>? _myActivities;
+  List<int>? _myInts;
   late String _myActivitiesResult;
-  final formKey = new GlobalKey<FormState>();
+  late String _myIntsResult;
+  final formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
     _myActivities = [];
+    _myInts = [];
     _myActivitiesResult = '';
+    _myIntsResult = '';
   }
 
   _saveForm() {
-    var form = formKey.currentState!;
+    final form = formKey.currentState!;
     if (form.validate()) {
       form.save();
       setState(() {
         _myActivitiesResult = _myActivities.toString();
+        _myIntsResult = _myInts.toString();
       });
+    } else {
+      setState(() =>
+          _myActivitiesResult = _myIntsResult = "Error: Validation failed");
     }
   }
 
@@ -53,10 +61,11 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               Container(
                 padding: EdgeInsets.all(16),
-                child: MultiSelectFormField(
-                  autovalidate: false,
-                  chipBackGroundColor: Colors.blue,
-                  chipLabelStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                child: MultiSelectFormField<String>(
+                  autovalidate: AutovalidateMode.disabled,
+                  chipBackgroundColor: Colors.blue,
+                  chipLabelStyle: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.white),
                   dialogTextStyle: TextStyle(fontWeight: FontWeight.bold),
                   checkBoxActiveColor: Colors.blue,
                   checkBoxCheckColor: Colors.white,
@@ -67,43 +76,20 @@ class _MyHomePageState extends State<MyHomePage> {
                     style: TextStyle(fontSize: 16),
                   ),
                   validator: (value) {
-                    if (value == null || value.length == 0) {
+                    if (value == null || value.isEmpty) {
                       return 'Please select one or more options';
                     }
                     return null;
                   },
                   dataSource: [
-                    {
-                      "display": "Running",
-                      "value": "Running",
-                    },
-                    {
-                      "display": "Climbing",
-                      "value": "Climbing",
-                    },
-                    {
-                      "display": "Walking",
-                      "value": "Walking",
-                    },
-                    {
-                      "display": "Swimming",
-                      "value": "Swimming",
-                    },
-                    {
-                      "display": "Soccer Practice",
-                      "value": "Soccer Practice",
-                    },
-                    {
-                      "display": "Baseball Practice",
-                      "value": "Baseball Practice",
-                    },
-                    {
-                      "display": "Football Practice",
-                      "value": "Football Practice",
-                    },
+                    Pair.from("Running"),
+                    Pair.from("Climbing"),
+                    Pair.from("Walking"),
+                    Pair.from("Swimming"),
+                    Pair.from("Soccer Practice"),
+                    Pair.from("Baseball Practice"),
+                    Pair.from("Football Practice"),
                   ],
-                  textField: 'display',
-                  valueField: 'value',
                   okButtonLabel: 'OK',
                   cancelButtonLabel: 'CANCEL',
                   hintWidget: Text('Please choose one or more'),
@@ -111,7 +97,51 @@ class _MyHomePageState extends State<MyHomePage> {
                   onSaved: (value) {
                     if (value == null) return;
                     setState(() {
-                      _myActivities = value;
+                      _myActivities = value.toList();
+                    });
+                  },
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(16),
+                child: Text(_myActivitiesResult),
+              ),
+              Container(
+                padding: EdgeInsets.all(16),
+                child: MultiSelectFormField<int>(
+                  autovalidate: AutovalidateMode.disabled,
+                  chipBackgroundColor: Colors.blue,
+                  chipLabelStyle: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.white),
+                  dialogTextStyle: TextStyle(fontWeight: FontWeight.bold),
+                  checkBoxActiveColor: Colors.blue,
+                  checkBoxCheckColor: Colors.white,
+                  dialogShapeBorder: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                  title: Text(
+                    "My Numbers",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please select one or more options';
+                    }
+                    return null;
+                  },
+                  dataSource: [
+                    Pair(label: "Zero", value: 0),
+                    Pair(label: "One", value: 1),
+                    Pair(label: "Two", value: 2),
+                    Pair(label: "Three", value: 3),
+                  ],
+                  okButtonLabel: 'OK',
+                  cancelButtonLabel: 'CANCEL',
+                  hintWidget: Text('Please choose one or more'),
+                  initialValue: _myInts,
+                  onSaved: (value) {
+                    if (value == null) return;
+                    setState(() {
+                      _myInts = value.toList();
                     });
                   },
                 ),
@@ -125,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Container(
                 padding: EdgeInsets.all(16),
-                child: Text(_myActivitiesResult),
+                child: Text(_myIntsResult),
               )
             ],
           ),
