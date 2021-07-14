@@ -27,7 +27,7 @@ A multi select form field using alert dialog to select multiple items with check
 | :------------------------ | :---------------------------------------------------------------------------------------------------------------------- |
 | **title** *Widget*    |                Set Title of MultiSelectTextFormField.                                                             |
 | **hintWidget** *Widget*                     |                  Set Hint Text of MultiSelectTextFormField.  |
-| **required** *bool*                     |                Add Selection is Compulsary or not.  |
+| **needed** *bool*                     |                Add Selection is Compulsary or not.  |
 | **errorText** *String*            |                Error String to be Displayed                     |
 | **dataSource** *List<dynamic>*|                 List of Data as DataSource To Select. |
 | **textField** *String* |            Key Param from List (DataSource). |
@@ -57,7 +57,7 @@ A multi select form field using alert dialog to select multiple items with check
  ## Minimal Example
 
 ```dart
-MultiSelectFormField(
+MultiSelectFormField<String>(
                   autovalidate: false,
                   chipBackGroundColor: Colors.red,
                   chipLabelStyle: TextStyle(fontWeight: FontWeight.bold),
@@ -71,18 +71,13 @@ MultiSelectFormField(
                     style: TextStyle(fontSize: 16),
                   ),
                   dataSource: [
-                    {
-                      "display": "Running",
-                      "value": "Running",
-                    },
-                    {
-                      "display": "Climbing",
-                      "value": "Climbing",
-                    },
-                    {
-                      "display": "Walking",
-                      "value": "Walking",
-                    },
+                    Pair.from("Running"),
+                    Pair.from("Climbing"),
+                    Pair.from("Walking"),
+                    Pair.from("Swimming"),
+                    Pair.from("Soccer Practice"),
+                    Pair.from("Baseball Practice"),
+                    Pair.from("Football Practice"),
                   ],
                   textField: 'display',
                   valueField: 'value',
@@ -156,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               Container(
                 padding: EdgeInsets.all(16),
-                child: MultiSelectFormField(
+                child: MultiSelectFormField<String>(
                   autovalidate: false,
                   titleText: 'My workouts',
                   validator: (value) {
@@ -165,40 +160,19 @@ class _MyHomePageState extends State<MyHomePage> {
                     }
                   },
                   dataSource: [
-                    {
-                      "display": "Running",
-                      "value": "Running",
-                    },
-                    {
-                      "display": "Climbing",
-                      "value": "Climbing",
-                    },
-                    {
-                      "display": "Walking",
-                      "value": "Walking",
-                    },
-                    {
-                      "display": "Swimming",
-                      "value": "Swimming",
-                    },
-                    {
-                      "display": "Soccer Practice",
-                      "value": "Soccer Practice",
-                    },
-                    {
-                      "display": "Baseball Practice",
-                      "value": "Baseball Practice",
-                    },
-                    {
-                      "display": "Football Practice",
-                      "value": "Football Practice",
-                    },
+                    Pair.from("Running"),
+                    Pair.from("Climbing"),
+                    Pair.from("Walking"),
+                    Pair.from("Swimming"),
+                    Pair.from("Soccer Practice"),
+                    Pair.from("Baseball Practice"),
+                    Pair.from("Football Practice"),
                   ],
                   textField: 'display',
                   valueField: 'value',
                   okButtonLabel: 'OK',
                   cancelButtonLabel: 'CANCEL',
-                  // required: true,
+                  // needed: true,
                   hintText: 'Please choose one or more',
                   value: _myActivities,
                   onSaved: (value) {
