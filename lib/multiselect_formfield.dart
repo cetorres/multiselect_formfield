@@ -1,5 +1,6 @@
 library multiselect_formfield;
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:multiselect_formfield/multiselect_dialog.dart';
 
@@ -11,6 +12,7 @@ class MultiSelectFormField extends FormField<dynamic> {
   final List? dataSource;
   final String? textField;
   final String? valueField;
+  final Key? key;
   final Function? change;
   final Function? open;
   final Function? close;
@@ -32,8 +34,9 @@ class MultiSelectFormField extends FormField<dynamic> {
     FormFieldSetter<dynamic>? onSaved,
     FormFieldValidator<dynamic>? validator,
     dynamic initialValue,
-    bool autovalidate = false,
+    AutovalidateMode? autovalidate = AutovalidateMode.disabled,
     this.title = const Text('Title'),
+    this.key,
     this.hintWidget = const Text('Tap to select one or more'),
     this.required = false,
     this.errorText = 'Please select one or more options',
@@ -60,17 +63,18 @@ class MultiSelectFormField extends FormField<dynamic> {
     this.checkBoxCheckColor,
   }) : super(
           onSaved: onSaved,
+          key:key,
           validator: validator,
           initialValue: initialValue,
-          autovalidate: autovalidate,
+          autovalidateMode: autovalidate,
           builder: (FormFieldState<dynamic> state) {
             List<Widget> _buildSelectedOptions(state) {
               List<Widget> selectedOptions = [];
 
               if (state.value != null) {
                 state.value.forEach((item) {
-                  var existingItem = dataSource!.singleWhere(((itm) => itm[valueField] == item),
-                      orElse: () => null);
+                  var existingItem = dataSource!.firstWhereOrNull(((itm) => itm[valueField] == item));
+                  if (existingItem != null)
                   selectedOptions.add(Chip(
                     labelStyle: chipLabelStyle,
                     backgroundColor: chipBackGroundColor,
