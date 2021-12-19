@@ -1,3 +1,9 @@
+## [0.1.7] - 12/28/2021
+
+* Compatibility with Flutter 2.8.0. Merged pull request [#47](https://github.com/cetorres/multiselect_formfield/pull/47).
+* Fixed example.
+
+Thanks to [FariJan](https://github.com/FariJan).
 
 ## [0.1.6] - 03/22/2021
 

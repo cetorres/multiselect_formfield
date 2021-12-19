@@ -102,6 +102,7 @@ MultiSelectFormField(
 ## Example
 
 ```dart
+import 'package:flutter/material.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
 
 void main() => runApp(MyApp());
@@ -121,8 +122,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List _myActivities;
-  String _myActivitiesResult;
+  List? _myActivities;
+  late String _myActivitiesResult;
   final formKey = new GlobalKey<FormState>();
 
   @override
@@ -133,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _saveForm() {
-    var form = formKey.currentState;
+    var form = formKey.currentState!;
     if (form.validate()) {
       form.save();
       setState(() {
@@ -157,12 +158,23 @@ class _MyHomePageState extends State<MyHomePage> {
               Container(
                 padding: EdgeInsets.all(16),
                 child: MultiSelectFormField(
-                  autovalidate: false,
-                  titleText: 'My workouts',
+                  autovalidate: AutovalidateMode.disabled,
+                  chipBackGroundColor: Colors.blue,
+                  chipLabelStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                  dialogTextStyle: TextStyle(fontWeight: FontWeight.bold),
+                  checkBoxActiveColor: Colors.blue,
+                  checkBoxCheckColor: Colors.white,
+                  dialogShapeBorder: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                  title: Text(
+                    "My workouts",
+                    style: TextStyle(fontSize: 16),
+                  ),
                   validator: (value) {
                     if (value == null || value.length == 0) {
                       return 'Please select one or more options';
                     }
+                    return null;
                   },
                   dataSource: [
                     {
@@ -198,9 +210,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   valueField: 'value',
                   okButtonLabel: 'OK',
                   cancelButtonLabel: 'CANCEL',
-                  // required: true,
-                  hintText: 'Please choose one or more',
-                  value: _myActivities,
+                  hintWidget: Text('Please choose one or more'),
+                  initialValue: _myActivities,
                   onSaved: (value) {
                     if (value == null) return;
                     setState(() {
@@ -210,8 +221,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.all(8),                
-                child: RaisedButton(
+                padding: EdgeInsets.all(8),
+                child: ElevatedButton(
                   child: Text('Save'),
                   onPressed: _saveForm,
                 ),

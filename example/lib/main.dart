@@ -54,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Container(
                 padding: EdgeInsets.all(16),
                 child: MultiSelectFormField(
-                  autovalidate: false,
+                  autovalidate: AutovalidateMode.disabled,
                   chipBackGroundColor: Colors.blue,
                   chipLabelStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                   dialogTextStyle: TextStyle(fontWeight: FontWeight.bold),
