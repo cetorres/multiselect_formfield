@@ -66,6 +66,7 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: Colors.white,
       title: widget.title,
       shape: widget.dialogShapeBorder,
       contentPadding: EdgeInsets.only(top: 12.0),
